@@ -282,20 +282,20 @@
 
 (defn format-libspecs!
   ; @description
-  ; - Reads the content of a Clojure source code file found on the given filepath and formats the libspecs within the ':require' macro:
-  ;   1. Groups the libspecs by type:
-  ;      1. Raw libspecs                               (e.g. 'namespace-a')
-  ;      2. Vector libspecs                            (e.g. '[namespace-a]')
-  ;      3. Vector libspecs with ':as', ':refer', etc. (e.g. '[namespace-a :as a]')
-  ;      4. Prefix lists                               (e.g. '(prefix [namespace-a :as a])')
-  ;      + Commented libspecs are ordered as they were not commented.
-  ;   2. Sorts the libspecs alphabetically within the type groups.
-  ;   3. Indents the libspecs.
-  ;   4. Aligns the vector type libspecs.
+  ; Reads the content of a Clojure source code file found on the given filepath and formats the libspecs within the ':require' macro:
+  ; 1. Groups the libspecs by type:
+  ;    1. Raw libspecs                               (e.g. 'namespace-a')
+  ;    2. Vector libspecs                            (e.g. '[namespace-a]')
+  ;    3. Vector libspecs with ':as', ':refer', etc. (e.g. '[namespace-a :as a]')
+  ;    4. Prefix lists                               (e.g. '(prefix [namespace-a :as a])')
+  ;    + Commented libspecs are ordered as they were not commented.
+  ; 2. Sorts the libspecs alphabetically within the type groups.
+  ; 3. Indents the libspecs.
+  ; 4. Aligns the vector type libspecs.
   ;
   ; @param (string) filepath
   ;
-  ; @example
+  ; @usage
   ; (format-libspecs! "my-namespace.clj")
   [filepath]
   (if-let [source-code (io/read-file filepath {:warn? true})]

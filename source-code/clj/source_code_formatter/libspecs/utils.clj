@@ -4,36 +4,36 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn libspec->type
+(defn line->type
   ; @ignore
   ;
   ; @description
-  ; Returns the type of the given libspec string.
+  ; Returns the type of the libspec found in the beginning of the given 'line' string.
   ;
-  ; @param (string) libspec
+  ; @param (string) line
   ;
   ; @example
-  ; (libspec->type "namespace-a]")
+  ; (line->type "namespace-a]")
   ; =>
   ; :raw
   ;
   ; @example
-  ; (libspec->type "[namespace-a :as a]")
+  ; (line->type "[namespace-a :as a]")
   ; =>
   ; :vector
   ;
   ; @example
-  ; (libspec->type "; [namespace-a :as a]")
+  ; (line->type "; [namespace-a :as a]")
   ; =>
   ; :comment
   ;
   ; @example
-  ; (libspec->type "(prefix [namespace-a :as a]]")
+  ; (line->type "(prefix [namespace-a :as a]]")
   ; =>
   ; :list
   ;
   ; @return (keyword)
   ; :comment, :empty, :list, :raw, :vector
-  [libspec]
-  (case (-> libspec first str)
+  [line]
+  (case (-> line str first str)
         "[" :vector ";" :comment "(" :list "" :empty :raw))

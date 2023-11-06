@@ -1,7 +1,9 @@
 
 (ns source-code-formatter.libspecs.read
-    (:require [string.api :as string]
-              [syntax.api :as syntax]))
+    (:require [regex.api  :as regex]
+              [string.api :as string]
+              [syntax.api :as syntax]
+              [vector.api :as vector]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -33,8 +35,27 @@
   ; @return (string)
   [source-code]
   (if-let [require-start-pos (string/first-dex-of source-code "(:require ")]
-          (if-let [require-end-pos (syntax/close-paren-position source-code require-start-pos)]
+          (if-let [require-end-pos (syntax/close-paren-position source-code {:offset require-start-pos})]
                   (-> source-code (string/part (inc require-end-pos))))))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn source-code->ns
+  [source-code]
+  ; ns-start: First position of a newline character that is followed by only whitespaces (if any) and the string "(ns ".
+  (if-let [ns-start (regex/first-dex-of source-code #"(?<=\n[ ]{0,})\(ns\s")]
+          (if-let [ns-end (syntax/close-paren-position source-code {:offset ns-start})]
+                  (-> source-code (string/part ns-start (inc ns-end))
+                                  (string/trim-start)))))
+
+(defn ns->require
+  [ns]
+  ; require-start: First position of a newline character that is followed by only whitespaces (if any) and the string "(:require ".
+  (if-let [require-start (regex/first-dex-of ns #"(?<=\n[ ]{0,})\(\:require\s")]
+          (if-let [require-end (syntax/close-paren-position ns {:offset require-start})]
+                  (-> ns (string/part require-start (inc require-end))
+                         (string/trim-start)))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -58,8 +79,10 @@
   ;
   ; @return (string)
   [source-code]
+  ;(if-let [ns-start-pos
+  ;         (string/first-dex-of source-code "(ns")]
   (if-let [require-start-pos (string/first-dex-of source-code "(:require ")]
-          (if-let [require-end-pos (syntax/close-paren-position source-code require-start-pos)]
+          (if-let [require-end-pos (syntax/close-paren-position source-code {:offset require-start-pos})]
                   (-> source-code (string/part require-start-pos (inc require-end-pos))
                                   (string/replace-part #"[\r\n]" " ")
                                   (string/trim-gaps)
@@ -72,18 +95,25 @@
   ; @ignore
   ;
   ; @description
-  ; Takes the require section of the 'ns' macro read and formatted by the 'source-code->require' function
-  ; and removes the "(:require " string from the beginning and its close paren from the end.
+  ; Takes the require section of the 'ns' macro read and formatted by the 'source-code->require'
+  ; function and ...
+  ; ... removes the "(:require " string from the beginning,
+  ; ... removes its close paren from the end.
   ;
   ; @param (string) require
   ;
   ; @example
-  ; (require->libspecs "(:require namespace-a [namespace-b] ; [namespace-c :as c] (prefix [namespace-d] [namespace-e]))")
+  ; (require->libspecs "(:require namespace-a [namespace-b] ; [namespace-c :as c]\n (prefix [namespace-d] [namespace-e]))")
   ; =>
-  ; "namespace-a [namespace-b] ; [namespace-c :as c] (prefix [namespace-d] [namespace-e])"
+  ; "namespace-a [namespace-b] ; [namespace-c :as c]\n (prefix [namespace-d] [namespace-e])"
   ;
   ; @return (string)
   [require]
   (-> require (string/after-first-occurence "(:require " {:return? false})
-              (string/before-last-occurence ")"          {:return? false})
-              (string/trim)))
+              (string/before-last-occurence ")"          {:return? false})))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn libspecs->chunks
+  [libspecs])

@@ -24,6 +24,14 @@ The <strong>clj-source-code-formatter</strong> functional documentation is [avai
 
 You can track the changes of the <strong>clj-source-code-formatter</strong> library [here](CHANGES.md).
 
+
+
+
+; https://github.com/bbatsov/clojure-style-guide
+
+
+
+
 # Usage
 
 ### Index

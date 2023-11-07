@@ -99,7 +99,6 @@ Reads the content of a Clojure source code file found on the given filepath and 
   (if-let [source-code (io/read-file filepath {:warn? true})]
           (if-let [ns (ns.read/source-code->ns source-code)]
                   (-> ns (fmt/reformat-string)
-                         (indent-lines)
                          (println)))))
 ```
 

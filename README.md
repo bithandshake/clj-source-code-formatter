@@ -34,6 +34,9 @@ You can track the changes of the <strong>clj-source-code-formatter</strong> libr
 
 # Usage
 
+> Some parameters of the following functions and some further functions are not discussed in this file.
+  To learn more about the available functionality, check out the [functional documentation](documentation/COVER.md)!
+
 ### Index
 
 - [How to format libspecs in a Clojure namespace?](#how-to-format-libspecs-in-a-clojure-namespace)

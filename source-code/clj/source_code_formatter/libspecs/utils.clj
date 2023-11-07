@@ -1,5 +1,6 @@
 
-(ns source-code-formatter.libspecs.utils)
+(ns source-code-formatter.libspecs.utils
+    (:require [string.api :as string]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -35,5 +36,5 @@
   ; @return (keyword)
   ; :comment, :empty, :list, :raw, :vector
   [line]
-  (case (-> line str first str)
+  (case (-> line string/first-character)
         "[" :vector ";" :comment "(" :list "" :empty :raw))

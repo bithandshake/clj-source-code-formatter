@@ -22,5 +22,4 @@
   (if-let [source-code (io/read-file filepath {:warn? true})]
           (if-let [ns (ns.read/source-code->ns source-code)]
                   (-> ns (fmt/reformat-string)
-                         (indent-lines)
                          (println)))))

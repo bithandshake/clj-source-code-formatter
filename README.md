@@ -8,13 +8,13 @@ The <strong>clj-source-code-formatter</strong> is a set of simple source code fo
 ### deps.edn
 
 ```
-{:deps {bithandshake/clj-source-code-formatter {:git/url "https://github.com/bithandshake/clj-source-code-formatter"
-                                                :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}}
+{:deps {monotech-tools/clj-source-code-formatter {:git/url "https://github.com/monotech-tools/clj-source-code-formatter"
+                                                  :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}}
 ```
 
 ### Current version
 
-Check out the latest commit on the [release branch](https://github.com/bithandshake/clj-source-code-formatter/tree/release).
+Check out the latest commit on the [release branch](https://github.com/monotech-tools/clj-source-code-formatter/tree/release).
 
 ### Documentation
 

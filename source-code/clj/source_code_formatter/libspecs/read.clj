@@ -1,9 +1,9 @@
 
 (ns source-code-formatter.libspecs.read
-    (:require [regex.api  :as regex]
-              [string.api :as string]
-              [syntax.api :as syntax]
-              [vector.api :as vector]))
+    (:require [regex.api         :as regex]
+              [string.api        :as string]
+              [syntax-reader.api :as syntax-reader]
+              [vector.api        :as vector]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -35,7 +35,7 @@
   ; @return (string)
   [source-code]
   (if-let [require-start-pos (string/first-dex-of source-code "(:require ")]
-          (if-let [require-end-pos (syntax/close-paren-position source-code {:offset require-start-pos})]
+          (if-let [require-end-pos (syntax-reader/paren-closing-position source-code {:offset require-start-pos})]
                   (-> source-code (string/part (inc require-end-pos))))))
 
 ;; ----------------------------------------------------------------------------
@@ -45,7 +45,7 @@
   [source-code]
   ; ns-start: First position of a newline character that is followed by only whitespaces (if any) and the string "(ns ".
   (if-let [ns-start (regex/first-dex-of source-code #"(?<=\n[ ]{0,})\(ns\s")]
-          (if-let [ns-end (syntax/close-paren-position source-code {:offset ns-start})]
+          (if-let [ns-end (syntax-reader/paren-closing-position source-code {:offset ns-start})]
                   (-> source-code (string/part ns-start (inc ns-end))
                                   (string/trim-start)))))
 
@@ -53,7 +53,7 @@
   [ns]
   ; require-start: First position of a newline character that is followed by only whitespaces (if any) and the string "(:require ".
   (if-let [require-start (regex/first-dex-of ns #"(?<=\n[ ]{0,})\(\:require\s")]
-          (if-let [require-end (syntax/close-paren-position ns {:offset require-start})]
+          (if-let [require-end (syntax-reader/paren-closing-position ns {:offset require-start})]
                   (-> ns (string/part require-start (inc require-end))
                          (string/trim-start)))))
 
@@ -82,7 +82,7 @@
   ;(if-let [ns-start-pos
   ;         (string/first-dex-of source-code "(ns")]
   (if-let [require-start-pos (string/first-dex-of source-code "(:require ")]
-          (if-let [require-end-pos (syntax/close-paren-position source-code {:offset require-start-pos})]
+          (if-let [require-end-pos (syntax-reader/paren-closing-position source-code {:offset require-start-pos})]
                   (-> source-code (string/part require-start-pos (inc require-end-pos))
                                   (string/replace-part #"[\r\n]" " ")
                                   (string/trim-gaps)

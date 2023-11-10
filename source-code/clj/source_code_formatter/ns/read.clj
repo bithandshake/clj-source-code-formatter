@@ -1,8 +1,8 @@
 
 (ns source-code-formatter.ns.read
-    (:require [regex.api  :as regex]
-              [string.api :as string]
-              [syntax.api :as syntax]))
+    (:require [regex.api         :as regex]
+              [string.api        :as string]
+              [syntax-reader.api :as syntax-reader]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -34,7 +34,7 @@
   ; @return (string)
   [source-code]
   (if-let [ns-start-pos (regex/first-dex-of source-code #"(?<=\n[ ]{0,})\(ns\s")]
-          (if-let [ns-end-pos (syntax/close-paren-position source-code {:offset ns-start-pos})]
+          (if-let [ns-end-pos (syntax-reader/paren-closing-position source-code {:offset ns-start-pos})]
                   (-> source-code (string/part (inc ns-end-pos))))))
 
 ;; ----------------------------------------------------------------------------
@@ -52,6 +52,6 @@
   [source-code]
   ; ns-start: First position of a newline character that is followed by only whitespaces (if any) and the string "(ns ".
   (if-let [ns-start-pos (regex/first-dex-of source-code #"(?<=\n[ ]{0,})\(ns\s")]
-          (if-let [ns-end-pos (syntax/close-paren-position source-code {:offset ns-start-pos})]
+          (if-let [ns-end-pos (syntax-reader/paren-closing-position source-code {:offset ns-start-pos})]
                   (-> source-code (string/part ns-start-pos (inc ns-end-pos))
                                   (string/trim-start)))))

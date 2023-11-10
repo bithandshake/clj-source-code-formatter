@@ -6,6 +6,7 @@
               [io.api                               :as io]
               [string.api                           :as string]
               [syntax.api                           :as syntax]
+              [syntax-reader.api                    :as syntax-reader]
               [vector.api                           :as vector]))
 
 ;; ----------------------------------------------------------------------------
@@ -231,8 +232,8 @@
              (if (-> result (string/cursor-out-of-bounds? cursor))
                  (-> result)
                  (let [observed-character (string/part result cursor (inc cursor))]
-                      (case observed-character "[" (let [close-pos      (syntax/close-bracket-position result {:ignore-comments? true :offset cursor})
-                                                         updated-result (string/apply-on-part          result cursor close-pos string/remove-newlines)]
+                      (case observed-character "[" (let [close-pos      (syntax-reader/bracket-closing-position result {:ignore-comments? true :offset cursor})
+                                                         updated-result (string/apply-on-part                   result cursor close-pos string/remove-newlines)]
                                                         (if (string/same-length? result updated-result)
                                                             (f updated-result (inc cursor))
                                                             (f updated-result (->  cursor (+ 1 (- (- (count result) (count updated-result))))))))))))]
@@ -272,11 +273,11 @@
                                                                    :raw     (detach-raw-f     line)))
 
           ; Removes the following part after the first libspec (it must be a vector libspec!).
-          (detach-vector-f  [line] (let [close-tag-pos (syntax/close-bracket-position line)]
+          (detach-vector-f  [line] (let [close-tag-pos (syntax-reader/bracket-closing-position line)]
                                         (string/part line 0 (inc close-tag-pos))))
 
           ; Removes the following part after the first libspec (it must be a prefix list!).
-          (detach-list-f    [line] (let [close-tag-pos (syntax/close-paren-position line)]
+          (detach-list-f    [line] (let [close-tag-pos (syntax-reader/paren-closing-position line)]
                                         (string/part line 0 (inc close-tag-pos))))
 
           ; Removes the following part after the first libspec (it must be a raw libspec!).

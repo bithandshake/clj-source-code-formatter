@@ -4,6 +4,7 @@
               [source-code-formatter.libspecs.read  :as libspecs.read]
               [source-code-formatter.libspecs.utils :as libspecs.utils]
               [io.api                               :as io]
+              [seqable.api                          :as seqable]
               [string.api                           :as string]
               [syntax.api                           :as syntax]
               [syntax-reader.api                    :as syntax-reader]
@@ -30,8 +31,8 @@
   ; @return (string)
   [dex line]
   (if (zero? dex)
-      (str (string/multiply " "  1) line)
-      (str (string/multiply " " 14) line)))
+      (str (string/repeat " "  1) line)
+      (str (string/repeat " " 14) line)))
 
 (defn indent-lines
   ; @ignore
@@ -69,7 +70,7 @@
   (if (-> line libspecs.utils/line->type (= :vector))
       (if-let [insert-pos (-> line (string/first-dex-of " :"))]
               (let [indent (- ns-length (dec insert-pos))]
-                   (string/insert-part line (string/multiply " " indent) insert-pos))
+                   (string/insert-part line (string/repeat " " indent) insert-pos))
               (-> line))
       (-> line)))
 
@@ -208,7 +209,7 @@
   [libspecs]
   (-> libspecs (string/prepend ":require")
                (syntax/paren)
-               (string/prepend (string/multiply " " 4))))
+               (string/prepend (string/repeat " " 4))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -229,11 +230,11 @@
   ; @return (string)
   [libspecs]
   (letfn [(f [result cursor]
-             (if (-> result (string/cursor-out-of-bounds? cursor))
+             (if (-> result (seqable/cursor-out-of-bounds? cursor))
                  (-> result)
-                 (let [observed-character (string/part result cursor (inc cursor))]
+                 (let [observed-character (string/keep-range result cursor (inc cursor))]
                       (case observed-character "[" (let [close-pos      (syntax-reader/bracket-closing-position result {:ignore-comments? true :offset cursor})
-                                                         updated-result (string/apply-on-part                   result cursor close-pos string/remove-newlines)]
+                                                         updated-result (string/apply-on-range                  result cursor close-pos string/remove-newlines)]
                                                         (if (string/same-length? result updated-result)
                                                             (f updated-result (inc cursor))
                                                             (f updated-result (->  cursor (+ 1 (- (- (count result) (count updated-result))))))))))))]
@@ -274,11 +275,11 @@
 
           ; Removes the following part after the first libspec (it must be a vector libspec!).
           (detach-vector-f  [line] (let [close-tag-pos (syntax-reader/bracket-closing-position line)]
-                                        (string/part line 0 (inc close-tag-pos))))
+                                        (string/keep-range line 0 (inc close-tag-pos))))
 
           ; Removes the following part after the first libspec (it must be a prefix list!).
           (detach-list-f    [line] (let [close-tag-pos (syntax-reader/paren-closing-position line)]
-                                        (string/part line 0 (inc close-tag-pos))))
+                                        (string/keep-range line 0 (inc close-tag-pos))))
 
           ; Removes the following part after the first libspec (it must be a raw libspec!).
           (detach-raw-f     [line] (string/before-first-occurence line " " {:return? true}))

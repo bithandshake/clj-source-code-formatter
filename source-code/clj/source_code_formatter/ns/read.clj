@@ -18,7 +18,7 @@
   ; @return (string)
   [source-code]
   (if-let [ns-start-pos (regex/first-dex-of source-code #"(?<=\n[ ]{0,})\(ns\s")]
-          (-> source-code (string/part 0 ns-start-pos)
+          (-> source-code (string/keep-range 0 ns-start-pos)
                           (string/trim-end)
                           (string/trim-newlines)
                           (string/append "\n"))))
@@ -35,7 +35,7 @@
   [source-code]
   (if-let [ns-start-pos (regex/first-dex-of source-code #"(?<=\n[ ]{0,})\(ns\s")]
           (if-let [ns-end-pos (syntax-reader/paren-closing-position source-code {:offset ns-start-pos})]
-                  (-> source-code (string/part (inc ns-end-pos))))))
+                  (-> source-code (string/keep-range (inc ns-end-pos))))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -53,5 +53,5 @@
   ; ns-start: First position of a newline character that is followed by only whitespaces (if any) and the string "(ns ".
   (if-let [ns-start-pos (regex/first-dex-of source-code #"(?<=\n[ ]{0,})\(ns\s")]
           (if-let [ns-end-pos (syntax-reader/paren-closing-position source-code {:offset ns-start-pos})]
-                  (-> source-code (string/part ns-start-pos (inc ns-end-pos))
+                  (-> source-code (string/keep-range ns-start-pos (inc ns-end-pos))
                                   (string/trim-start)))))

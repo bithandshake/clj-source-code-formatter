@@ -1,7 +1,6 @@
 
 (ns source-code-formatter.ns.format
-    (:require [cljfmt.core                   :as fmt]
-              [io.api                        :as io]
+    (:require [io.api                        :as io]
               [source-code-formatter.ns.read :as ns.read]))
 
 ;; ----------------------------------------------------------------------------
@@ -21,5 +20,4 @@
   [filepath]
   (if-let [source-code (io/read-file filepath {:warn? true})]
           (if-let [ns (ns.read/source-code->ns source-code)]
-                  (-> ns (fmt/reformat-string)
-                         (println)))))
+                  (-> ns ))))

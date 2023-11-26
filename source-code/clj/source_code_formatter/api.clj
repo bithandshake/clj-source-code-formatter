@@ -7,7 +7,7 @@
 ;; ----------------------------------------------------------------------------
 
 ; source-code-formatter.libspecs.format
-(def format-libspecs! libspecs.format/format-libspecs!)
+(def format-ns-deps! libspecs.format/format-ns-deps!)
 
 ; source-code-formatter.ns.format
 (def format-ns! ns.format/format-ns!)

@@ -37,9 +37,8 @@
   ; @usage
   ; (format-ns-deps! "my-namespace.clj")
   [filepath]
-  (if-let [file-content (io/read-file filepath {:warn? true})]
-          (if-let [source-code-map (source-code-map/read-source-file filepath)]
-                  (let [source-code-map (ns.prototypes/source-code-map-prototype source-code-map)]
-                       (-> file-content (rebuild-ns-directive source-code-map :ns/import)
-                                        (rebuild-ns-directive source-code-map :ns/require)
-                                        (rebuild-ns-directive source-code-map :ns/use))))))
+  (if-let [source-code-map (source-code-map/read-source-file filepath)]
+          (let [source-code-map (ns.prototypes/source-code-map-prototype source-code-map)]
+               (io/update-file! filepath (fn [file-content] (-> file-content (rebuild-ns-directive source-code-map :ns/import)
+                                                                             (rebuild-ns-directive source-code-map :ns/require)
+                                                                             (rebuild-ns-directive source-code-map :ns/use)))))))

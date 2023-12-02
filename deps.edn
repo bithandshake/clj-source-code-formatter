@@ -3,7 +3,7 @@
  :deps  {bithandshake/cljc-fruits           {:git/url "https://github.com/bithandshake/cljc-fruits"
                                              :sha     "568ee3b7bb6b9d39e894c96754e12584d3490985"}
          bithandshake/cljc-io               {:git/url "https://github.com/bithandshake/cljc-io"
-                                             :sha     "a6edddf538d6143aea91a702df64f736cddeb50b"}
+                                             :sha     "b936261c0f1cfb82353ba3a30037c572420afba6"}
          monotech-tools/clj-source-code-map {:git/url "https://github.com/monotech-tools/clj-source-code-map"
                                              :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
          org.clojure/clojure                {:mvn/version "1.10.1"}}}

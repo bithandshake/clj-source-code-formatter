@@ -1,5 +1,5 @@
 
-(ns source-code-formatter.libspecs.utils
+(ns source-code-formatter.ns.utils
     (:require [string.api :as string]
               [vector.api :as vector]))
 

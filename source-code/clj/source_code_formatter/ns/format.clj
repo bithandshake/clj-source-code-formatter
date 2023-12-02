@@ -5,7 +5,9 @@
               [source-code-formatter.ns.indents    :as ns.indents]
               [source-code-map.api                 :as source-code-map]
               [io.api                            :as io]
-              [string.api                          :as string]))
+              [string.api                          :as string]
+
+              [time.api :as time]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -37,8 +39,14 @@
   ; @usage
   ; (format-ns-deps! "my-namespace.clj")
   [filepath]
+  (println "filepath:" filepath)
+  (println (time/timestamp-string))
+  (println "generating source code map")
   (if-let [source-code-map (source-code-map/read-source-file filepath)]
-          (let [source-code-map (ns.prototypes/source-code-map-prototype source-code-map)]
+          (let [_ (println "source code map generated")
+                source-code-map (ns.prototypes/source-code-map-prototype source-code-map)]
+               (println "source code map updated")
                (io/update-file! filepath (fn [file-content] (-> file-content (rebuild-ns-directive source-code-map :ns/import)
                                                                              (rebuild-ns-directive source-code-map :ns/require)
-                                                                             (rebuild-ns-directive source-code-map :ns/use)))))))
+                                                                             (rebuild-ns-directive source-code-map :ns/use)))))
+          (println "unable to generate source code map")))

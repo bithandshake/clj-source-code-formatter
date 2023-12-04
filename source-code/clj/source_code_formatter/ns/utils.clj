@@ -1,6 +1,7 @@
 
 (ns source-code-formatter.ns.utils
-    (:require [string.api :as string]
+    (:require [map.api    :as map]
+              [string.api :as string]
               [vector.api :as vector]))
 
 ;; ----------------------------------------------------------------------------
@@ -42,8 +43,25 @@
   ;
   ; @return (string)
   [libspecs]
-  (letfn [(f [result {:keys [alias name refer] :as libspec}]
-             (if (or alias refer)
-                 (max result (count name))
-                 (->  result)))]
-         (reduce f 0 libspecs)))
+  (letfn [(f0 [result {:keys [alias name refer] :as libspec}]
+              (if (or alias refer)
+                  (max result (count name))
+                  (->  result)))]
+         (reduce f0 0 libspecs)))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn prepare-ns-declaration-map
+  ; @ignore
+  ;
+  ; @param (map) ns-declaration-map
+  ;
+  ; @return (map)
+  [ns-declaration-map]
+  (-> ns-declaration-map (update-in [:import  :deps] sort-libspecs)
+                         (update-in [:import  :deps] vector/update-items-by :prefixed update :prefixed sort-libspecs)
+                         (update-in [:require :deps] sort-libspecs)
+                         (update-in [:require :deps] vector/update-items-by :prefixed update :prefixed sort-libspecs)
+                         (update-in [:use     :deps] sort-libspecs)
+                         (update-in [:use     :deps] vector/update-items-by :prefixed update :prefixed sort-libspecs)))

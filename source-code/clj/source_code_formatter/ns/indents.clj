@@ -6,18 +6,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn ns-indent-length
-  ; @ignore
-  ;
-  ; @param (string) file-content
-  ; @param (map) source-code-map
-  ; @param (keyword) directive
-  ;
-  ; @return (integer)
-  [file-content source-code-map _]
-  (let [ns-start-position (-> source-code-map :ns first :bounds first)]
-       (string/inline-position file-content ns-start-position)))
-
 (defn ns-directive-indent-length
   ; @ignore
   ;
@@ -27,7 +15,7 @@
   ;
   ; @return (integer)
   [file-content source-code-map directive]
-  (string/inline-position file-content (-> source-code-map :ns first directive :bounds first)))
+  (string/inline-position file-content (-> source-code-map directive :bounds first)))
 
 (defn libspec-indent-length
   ; @ignore
@@ -51,7 +39,7 @@
   ;
   ; @return (integer)
   [_ source-code-map directive libspec]
-  (- (-> source-code-map :ns first directive :deps libspecs.utils/longest-libspec-name-length)
+  (- (-> source-code-map directive :deps libspecs.utils/longest-libspec-name-length)
      (-> libspec :name count)))
 
 (defn prefixed-namespace-indent-length

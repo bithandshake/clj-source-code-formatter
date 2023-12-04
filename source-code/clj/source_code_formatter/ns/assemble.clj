@@ -12,19 +12,19 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
   ; @return (string)
-  [_ source-code-map directive libspec]
-  (if (-> source-code-map :ns first directive :deps first (not= libspec)) "\n"))
+  [_ ns-declaration-map directive libspec]
+  (if (-> ns-declaration-map directive :deps first (not= libspec)) "\n"))
 
 (defn assemble-prefixed-namespace-newline
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ; @param (map) pref-ns
@@ -40,7 +40,7 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
@@ -52,7 +52,7 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
@@ -67,14 +67,14 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
   ; @return (string)
-  [file-content source-code-map directive libspec]
-  (let [libspec-indent-length (ns.indents/libspec-indent-length file-content source-code-map directive)]
-       (if (-> source-code-map :ns first directive :deps first (not= libspec))
+  [file-content ns-declaration-map directive libspec]
+  (let [libspec-indent-length (ns.indents/libspec-indent-length file-content ns-declaration-map directive)]
+       (if (-> ns-declaration-map directive :deps first (not= libspec))
            (string/repeat " " libspec-indent-length)
            (string/repeat " " 1))))
 
@@ -82,14 +82,14 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ; @param (map) pref-ns
   ;
   ; @return (string)
-  [file-content source-code-map directive libspec pref-ns]
-  (let [pref-ns-indent-length (ns.indents/prefixed-namespace-indent-length file-content source-code-map directive libspec)]
+  [file-content ns-declaration-map directive libspec pref-ns]
+  (let [pref-ns-indent-length (ns.indents/prefixed-namespace-indent-length file-content ns-declaration-map directive libspec)]
        (if (-> libspec :prefixed first (not= pref-ns))
            (string/repeat " " pref-ns-indent-length)
            (string/repeat " " 1))))
@@ -98,26 +98,26 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
   ; @return (string)
-  [file-content source-code-map directive libspec]
-  (string/repeat " " (ns.indents/libspec-details-indent-length file-content source-code-map directive libspec)))
+  [file-content ns-declaration-map directive libspec]
+  (string/repeat " " (ns.indents/libspec-details-indent-length file-content ns-declaration-map directive libspec)))
 
 (defn assemble-prefixed-namespace-details-indent
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ; @param (map) pref-ns
   ;
   ; @return (string)
-  [file-content source-code-map directive libspec pref-ns]
-  (string/repeat " " (ns.indents/prefixed-namespace-details-indent-length file-content source-code-map directive libspec pref-ns)))
+  [file-content ns-declaration-map directive libspec pref-ns]
+  (string/repeat " " (ns.indents/prefixed-namespace-details-indent-length file-content ns-declaration-map directive libspec pref-ns)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -126,7 +126,7 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
@@ -138,7 +138,7 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
@@ -150,7 +150,7 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
@@ -162,7 +162,7 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
@@ -177,37 +177,37 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ; @param (map) pref-ns
   ;
   ; @return (string)
-  [file-content source-code-map directive {:keys [prefixed] :as libspec} {:keys [alias only refer rename] :as pref-ns}]
-  (str (assemble-prefixed-namespace-newline file-content source-code-map directive libspec pref-ns)
-       (assemble-prefixed-namespace-indent  file-content source-code-map directive libspec pref-ns)
-       (assemble-libspec-opening            file-content source-code-map directive pref-ns)
-       (cond alias  (assemble-prefixed-namespace-details-indent file-content source-code-map directive libspec pref-ns)
-             only   (assemble-prefixed-namespace-details-indent file-content source-code-map directive libspec pref-ns)
-             refer  (assemble-prefixed-namespace-details-indent file-content source-code-map directive libspec pref-ns)
-             rename (assemble-prefixed-namespace-details-indent file-content source-code-map directive libspec pref-ns))
-       (assemble-libspec-alias              file-content source-code-map directive pref-ns)
-       (assemble-libspec-only               file-content source-code-map directive pref-ns)
-       (assemble-libspec-refer              file-content source-code-map directive pref-ns)
-       (assemble-libspec-rename             file-content source-code-map directive pref-ns)
-       (assemble-libspec-closure            file-content source-code-map directive pref-ns)))
+  [file-content ns-declaration-map directive {:keys [prefixed] :as libspec} {:keys [alias only refer rename] :as pref-ns}]
+  (str (assemble-prefixed-namespace-newline file-content ns-declaration-map directive libspec pref-ns)
+       (assemble-prefixed-namespace-indent  file-content ns-declaration-map directive libspec pref-ns)
+       (assemble-libspec-opening            file-content ns-declaration-map directive pref-ns)
+       (cond alias  (assemble-prefixed-namespace-details-indent file-content ns-declaration-map directive libspec pref-ns)
+             only   (assemble-prefixed-namespace-details-indent file-content ns-declaration-map directive libspec pref-ns)
+             refer  (assemble-prefixed-namespace-details-indent file-content ns-declaration-map directive libspec pref-ns)
+             rename (assemble-prefixed-namespace-details-indent file-content ns-declaration-map directive libspec pref-ns))
+       (assemble-libspec-alias              file-content ns-declaration-map directive pref-ns)
+       (assemble-libspec-only               file-content ns-declaration-map directive pref-ns)
+       (assemble-libspec-refer              file-content ns-declaration-map directive pref-ns)
+       (assemble-libspec-rename             file-content ns-declaration-map directive pref-ns)
+       (assemble-libspec-closure            file-content ns-declaration-map directive pref-ns)))
 
 (defn assemble-prefixed-namespaces
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
   ; @return (string)
-  [file-content source-code-map directive {:keys [prefixed] :as libspec}]
-  (letfn [(f [result pref-ns] (str result (assemble-prefixed-namespace file-content source-code-map directive libspec pref-ns)))]
+  [file-content ns-declaration-map directive {:keys [prefixed] :as libspec}]
+  (letfn [(f [result pref-ns] (str result (assemble-prefixed-namespace file-content ns-declaration-map directive libspec pref-ns)))]
          (reduce f nil prefixed)))
 
 ;; ----------------------------------------------------------------------------
@@ -217,69 +217,69 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
   ; @return (string)
-  [file-content source-code-map directive libspec]
-  (str (assemble-libspec-newline file-content source-code-map directive libspec)
-       (assemble-libspec-indent  file-content source-code-map directive libspec)
-       (assemble-libspec-opening file-content source-code-map directive libspec)
-       (assemble-libspec-closure file-content source-code-map directive libspec)))
+  [file-content ns-declaration-map directive libspec]
+  (str (assemble-libspec-newline file-content ns-declaration-map directive libspec)
+       (assemble-libspec-indent  file-content ns-declaration-map directive libspec)
+       (assemble-libspec-opening file-content ns-declaration-map directive libspec)
+       (assemble-libspec-closure file-content ns-declaration-map directive libspec)))
 
 (defn assemble-detailed-libspec
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
   ; @return (string)
-  [file-content source-code-map directive libspec]
-  (str (assemble-libspec-newline        file-content source-code-map directive libspec)
-       (assemble-libspec-indent         file-content source-code-map directive libspec)
-       (assemble-libspec-opening        file-content source-code-map directive libspec)
-       (assemble-libspec-details-indent file-content source-code-map directive libspec)
-       (assemble-libspec-alias          file-content source-code-map directive libspec)
-       (assemble-libspec-only           file-content source-code-map directive libspec)
-       (assemble-libspec-refer          file-content source-code-map directive libspec)
-       (assemble-libspec-rename         file-content source-code-map directive libspec)
-       (assemble-libspec-closure        file-content source-code-map directive libspec)))
+  [file-content ns-declaration-map directive libspec]
+  (str (assemble-libspec-newline        file-content ns-declaration-map directive libspec)
+       (assemble-libspec-indent         file-content ns-declaration-map directive libspec)
+       (assemble-libspec-opening        file-content ns-declaration-map directive libspec)
+       (assemble-libspec-details-indent file-content ns-declaration-map directive libspec)
+       (assemble-libspec-alias          file-content ns-declaration-map directive libspec)
+       (assemble-libspec-only           file-content ns-declaration-map directive libspec)
+       (assemble-libspec-refer          file-content ns-declaration-map directive libspec)
+       (assemble-libspec-rename         file-content ns-declaration-map directive libspec)
+       (assemble-libspec-closure        file-content ns-declaration-map directive libspec)))
 
 (defn assemble-prefixed-libspec
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
   ; @return (string)
-  [file-content source-code-map directive libspec]
-  (str (assemble-libspec-newline     file-content source-code-map directive libspec)
-       (assemble-libspec-indent      file-content source-code-map directive libspec)
-       (assemble-libspec-opening     file-content source-code-map directive libspec)
-       (assemble-prefixed-namespaces file-content source-code-map directive libspec)
-       (assemble-libspec-closure     file-content source-code-map directive libspec)))
+  [file-content ns-declaration-map directive libspec]
+  (str (assemble-libspec-newline     file-content ns-declaration-map directive libspec)
+       (assemble-libspec-indent      file-content ns-declaration-map directive libspec)
+       (assemble-libspec-opening     file-content ns-declaration-map directive libspec)
+       (assemble-prefixed-namespaces file-content ns-declaration-map directive libspec)
+       (assemble-libspec-closure     file-content ns-declaration-map directive libspec)))
 
 (defn assemble-libspec
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (map) libspec
   ;
   ; @return (string)
-  [file-content source-code-map directive {:keys [alias only prefixed refer rename] :as libspec}]
-  (cond prefixed (assemble-prefixed-libspec file-content source-code-map directive libspec)
-        alias    (assemble-detailed-libspec file-content source-code-map directive libspec)
-        only     (assemble-detailed-libspec file-content source-code-map directive libspec)
-        refer    (assemble-detailed-libspec file-content source-code-map directive libspec)
-        rename   (assemble-detailed-libspec file-content source-code-map directive libspec)
-        :basic   (assemble-basic-libspec    file-content source-code-map directive libspec)))
+  [file-content ns-declaration-map directive {:keys [alias only prefixed refer rename] :as libspec}]
+  (cond prefixed (assemble-prefixed-libspec file-content ns-declaration-map directive libspec)
+        alias    (assemble-detailed-libspec file-content ns-declaration-map directive libspec)
+        only     (assemble-detailed-libspec file-content ns-declaration-map directive libspec)
+        refer    (assemble-detailed-libspec file-content ns-declaration-map directive libspec)
+        rename   (assemble-detailed-libspec file-content ns-declaration-map directive libspec)
+        :basic   (assemble-basic-libspec    file-content ns-declaration-map directive libspec)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -288,19 +288,19 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ;
   ; @return (string)
-  [file-content source-code-map directive]
-  (let [ns-directive-indent (ns.indents/ns-directive-indent-length file-content source-code-map directive)]
+  [file-content ns-declaration-map directive]
+  (let [ns-directive-indent (ns.indents/ns-directive-indent-length file-content ns-declaration-map directive)]
        (str "(:" (name directive))))
 
 (defn assemble-ns-directive-closure
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ;
   ; @return (string)
@@ -311,27 +311,27 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ;
   ; @return (string)
-  [file-content source-code-map directive]
-  (let [libspecs (-> source-code-map :ns first directive :deps)]
-       (letfn [(f [result libspec] (str result (assemble-libspec file-content source-code-map directive libspec)))]
+  [file-content ns-declaration-map directive]
+  (let [libspecs (-> ns-declaration-map directive :deps)]
+       (letfn [(f [result libspec] (str result (assemble-libspec file-content ns-declaration-map directive libspec)))]
               (reduce f nil libspecs))))
 
 (defn assemble-ns-directive
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ;
   ; @return (string)
-  [file-content source-code-map directive]
-  (str (assemble-ns-directive-opening  file-content source-code-map directive)
-       (assemble-ns-directive-libspecs file-content source-code-map directive)
-       (assemble-ns-directive-closure  file-content source-code-map directive)))
+  [file-content ns-declaration-map directive]
+  (str (assemble-ns-directive-opening  file-content ns-declaration-map directive)
+       (assemble-ns-directive-libspecs file-content ns-declaration-map directive)
+       (assemble-ns-directive-closure  file-content ns-declaration-map directive)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -340,25 +340,25 @@
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ; @param (string) comment
   ;
   ; @return (string)
-  [file-content source-code-map directive comment]
-  (let [libspec-indent-length (ns.indents/libspec-indent-length file-content source-code-map directive)]
+  [file-content ns-declaration-map directive comment]
+  (let [libspec-indent-length (ns.indents/libspec-indent-length file-content ns-declaration-map directive)]
        (str comment (string/repeat " " libspec-indent-length))))
 
 (defn assemble-ns-directive-comments
   ; @ignore
   ;
   ; @param (string) file-content
-  ; @param (map) source-code-map
+  ; @param (map) ns-declaration-map
   ; @param (keyword) directive
   ;
   ; @return (string)
-  [file-content source-code-map directive]
-  (if-let [[started-at ended-at :as ns-directive-bounds] (-> source-code-map :ns first directive :bounds)]
+  [file-content ns-declaration-map directive]
+  (if-let [[started-at ended-at :as ns-directive-bounds] (-> ns-declaration-map directive :bounds)]
           (let [commented-parts (syntax-reader/get-commented-parts file-content {} {:offset started-at :endpoint ended-at})]
-               (-> commented-parts (vector/->items (fn [%] (assemble-ns-directive-comment file-content source-code-map directive %)))
+               (-> commented-parts (vector/->items (fn [%] (assemble-ns-directive-comment file-content ns-declaration-map directive %)))
                                    (string/join)))))

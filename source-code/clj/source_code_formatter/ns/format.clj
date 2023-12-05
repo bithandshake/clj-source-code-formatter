@@ -19,14 +19,13 @@
   ;
   ; @return (string)
   [file-content ns-declaration-map directive]
-  (println ns-declaration-map)
   (if-let [_ (-> ns-declaration-map directive :bounds)]
           (-> file-content (string/cut-range   (-> ns-declaration-map directive :bounds first)
                                                (-> ns-declaration-map directive :bounds second))
                            (string/insert-part (-> file-content (ns.assemble/assemble-ns-directive ns-declaration-map directive))
                                                (-> ns-declaration-map directive :bounds first))
-                         (string/insert-part (-> file-content (ns.assemble/assemble-ns-directive-comments ns-declaration-map directive))
-                                             (-> ns-declaration-map directive :bounds first (+ 3 (-> directive name count)))))
+                           (string/insert-part (-> file-content (ns.assemble/assemble-ns-directive-comments ns-declaration-map directive))
+                                               (-> ns-declaration-map directive :bounds first (+ 3 (-> directive name count)))))
           (-> file-content)))
 
 (defn format-ns-deps!
@@ -38,6 +37,8 @@
   ; @usage
   ; (format-ns-deps! "my-namespace.clj")
   [filepath]
+  ; The 'ns-declaration-map' has to be regenerated after each directive rebuilding,
+  ; because the positons of other directives would have been changed.
   (if-let [file-content (io/read-file filepath {:warn? true})]
           (letfn [(f0 [file-content directive]
                       (let [ns-declaration-map (-> file-content source-code-map/ns-declaration-map ns.utils/prepare-ns-declaration-map)]

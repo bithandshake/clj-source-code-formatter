@@ -5,5 +5,5 @@
          bithandshake/cljc-io               {:git/url "https://github.com/bithandshake/cljc-io"
                                              :sha     "6b0ec253964ec7ce892499c3a01c388e46a09dfe"}
          monotech-tools/clj-source-code-map {:git/url "https://github.com/monotech-tools/clj-source-code-map"
-                                             :sha     "e1caaf65155b5b48b02bd1be8fb2d285fdce7c69"}
+                                             :sha     "00df8b3e5dc45eb2bc588e4162c41472f76fccc1"}
          org.clojure/clojure                {:mvn/version "1.10.1"}}}

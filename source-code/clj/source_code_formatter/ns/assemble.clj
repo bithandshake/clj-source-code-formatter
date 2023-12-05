@@ -45,8 +45,9 @@
   ; @param (map) libspec
   ;
   ; @return (string)
-  [_ _ _ {:keys [name]}]
-  (str "[" name))
+  [_ _ _ {:keys [name raw?]}]
+  (if raw? (str     name)
+           (str "[" name)))
 
 (defn assemble-libspec-closure
   ; @ignore
@@ -57,8 +58,9 @@
   ; @param (map) libspec
   ;
   ; @return (string)
-  [_ _ _ _]
-  (str "]"))
+  [_ _ _ {:keys [raw?]}]
+  (if raw? (str)
+           (str "]")))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -156,7 +158,8 @@
   ;
   ; @return (string)
   [_ _ _ {:keys [refer]}]
-  (if refer (str " :refer [" (-> refer vector/abc-items (string/join " ")) "]")))
+  (cond (-> refer vector?)  (str " :refer [" (-> refer vector/abc-items (string/join " ")) "]")
+        (-> refer keyword?) (str " :refer " refer "")))
 
 (defn assemble-libspec-rename
   ; @ignore
@@ -207,11 +210,26 @@
   ;
   ; @return (string)
   [file-content ns-declaration-map directive {:keys [prefixed] :as libspec}]
-  (letfn [(f [result pref-ns] (str result (assemble-prefixed-namespace file-content ns-declaration-map directive libspec pref-ns)))]
-         (reduce f nil prefixed)))
+  (letfn [(f0 [result pref-ns] (str result (assemble-prefixed-namespace file-content ns-declaration-map directive libspec pref-ns)))]
+         (reduce f0 nil prefixed)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn assemble-raw-libspec
+  ; @ignore
+  ;
+  ; @param (string) file-content
+  ; @param (map) ns-declaration-map
+  ; @param (keyword) directive
+  ; @param (map) libspec
+  ;
+  ; @return (string)
+  [file-content ns-declaration-map directive libspec]
+  (str (assemble-libspec-newline file-content ns-declaration-map directive libspec)
+       (assemble-libspec-indent  file-content ns-declaration-map directive libspec)
+       (assemble-libspec-opening file-content ns-declaration-map directive libspec)
+       (assemble-libspec-closure file-content ns-declaration-map directive libspec)))
 
 (defn assemble-basic-libspec
   ; @ignore
@@ -273,12 +291,13 @@
   ; @param (map) libspec
   ;
   ; @return (string)
-  [file-content ns-declaration-map directive {:keys [alias only prefixed refer rename] :as libspec}]
+  [file-content ns-declaration-map directive {:keys [alias only prefixed raw? refer rename] :as libspec}]
   (cond prefixed (assemble-prefixed-libspec file-content ns-declaration-map directive libspec)
         alias    (assemble-detailed-libspec file-content ns-declaration-map directive libspec)
         only     (assemble-detailed-libspec file-content ns-declaration-map directive libspec)
         refer    (assemble-detailed-libspec file-content ns-declaration-map directive libspec)
         rename   (assemble-detailed-libspec file-content ns-declaration-map directive libspec)
+        raw?     (assemble-raw-libspec      file-content ns-declaration-map directive libspec)
         :basic   (assemble-basic-libspec    file-content ns-declaration-map directive libspec)))
 
 ;; ----------------------------------------------------------------------------
@@ -317,8 +336,8 @@
   ; @return (string)
   [file-content ns-declaration-map directive]
   (let [libspecs (-> ns-declaration-map directive :deps)]
-       (letfn [(f [result libspec] (str result (assemble-libspec file-content ns-declaration-map directive libspec)))]
-              (reduce f nil libspecs))))
+       (letfn [(f0 [result libspec] (str result (assemble-libspec file-content ns-declaration-map directive libspec)))]
+              (reduce f0 nil libspecs))))
 
 (defn assemble-ns-directive
   ; @ignore

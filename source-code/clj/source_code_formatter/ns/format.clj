@@ -24,9 +24,9 @@
           (-> file-content (string/cut-range   (-> ns-declaration-map directive :bounds first)
                                                (-> ns-declaration-map directive :bounds second))
                            (string/insert-part (-> file-content (ns.assemble/assemble-ns-directive ns-declaration-map directive))
-                                               (-> ns-declaration-map directive :bounds first)))
-;                         (string/insert-part (-> file-content (ns.assemble/assemble-ns-directive-comments ns-declaration-map directive))
-;                                             (-> ns-declaration-map directive :bounds first (+ 3 (-> directive name count))))])
+                                               (-> ns-declaration-map directive :bounds first))
+                         (string/insert-part (-> file-content (ns.assemble/assemble-ns-directive-comments ns-declaration-map directive))
+                                             (-> ns-declaration-map directive :bounds first (+ 3 (-> directive name count)))))
           (-> file-content)))
 
 (defn format-ns-deps!
@@ -42,6 +42,6 @@
           (letfn [(f0 [file-content directive]
                       (let [ns-declaration-map (-> file-content source-code-map/ns-declaration-map ns.utils/prepare-ns-declaration-map)]
                            (rebuild-ns-directive file-content ns-declaration-map directive)))]
-                 (-> file-content (f0 :import)
-                                  (f0 :require)
-                                  (f0 :use)))))
+                 (io/write-file! filepath (-> file-content (f0 :import)
+                                                           (f0 :require)
+                                                           (f0 :use))))))

@@ -54,10 +54,10 @@ function formats the libspecs in the source code of the file found under the giv
 It reads the content of the file and formats the libspecs within the ':require' macro:
 
 1. Groups the libspecs by type:
-   1. Raw libspecs                               (e.g. 'namespace-a')
-   2. Vector libspecs                            (e.g. '[namespace-a]')
-   3. Vector libspecs with ':as', ':refer', etc. (e.g. '[namespace-a :as a]')
-   4. Prefix lists                               (e.g. '(prefix [namespace-a :as a])')
+   1. Raw libspecs                               (e.g., 'namespace-a')
+   2. Vector libspecs                            (e.g., '[namespace-a]')
+   3. Vector libspecs with ':as', ':refer', etc. (e.g., '[namespace-a :as a]')
+   4. Prefix lists                               (e.g., '(prefix [namespace-a :as a])')
    + Commented libspecs are grouped as they were not commented.
 
 

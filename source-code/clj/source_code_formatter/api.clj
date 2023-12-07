@@ -5,5 +5,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-; source-code-formatter.ns.format
+; @redirect (source-code-formatter.ns.format)
 (def format-ns-deps! ns.format/format-ns-deps!)

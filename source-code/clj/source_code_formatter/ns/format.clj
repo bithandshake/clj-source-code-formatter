@@ -1,11 +1,11 @@
 
 (ns source-code-formatter.ns.format
-    (:require [io.api                            :as io]
+    (:require [fruits.string.api                 :as string]
+              [io.api                            :as io]
               [source-code-formatter.ns.assemble :as ns.assemble]
               [source-code-formatter.ns.indents  :as ns.indents]
               [source-code-formatter.ns.utils    :as ns.utils]
-              [source-code-map.api               :as source-code-map]
-              [string.api                        :as string]))
+              [source-code-map.api               :as source-code-map]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

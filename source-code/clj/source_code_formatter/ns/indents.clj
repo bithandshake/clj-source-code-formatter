@@ -1,7 +1,7 @@
 
 (ns source-code-formatter.ns.indents
-    (:require [source-code-formatter.ns.utils :as libspecs.utils]
-              [string.api                     :as string]))
+    (:require [fruits.string.api              :as string]
+              [source-code-formatter.ns.utils :as libspecs.utils]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

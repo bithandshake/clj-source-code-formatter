@@ -1,8 +1,8 @@
 
 (ns source-code-formatter.ns.utils
-    (:require [map.api    :as map]
-              [string.api :as string]
-              [vector.api :as vector]))
+    (:require [fruits.map.api    :as map]
+              [fruits.string.api :as string]
+              [fruits.vector.api :as vector]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

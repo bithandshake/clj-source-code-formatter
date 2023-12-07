@@ -1,9 +1,9 @@
 
 (ns source-code-formatter.ns.assemble
-    (:require [source-code-formatter.ns.indents :as ns.indents]
-              [string.api                       :as string]
-              [syntax-reader.api                :as syntax-reader]
-              [vector.api                       :as vector]))
+    (:require [fruits.string.api                :as string]
+              [fruits.vector.api                :as vector]
+              [source-code-formatter.ns.indents :as ns.indents]
+              [syntax-reader.api                :as syntax-reader]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

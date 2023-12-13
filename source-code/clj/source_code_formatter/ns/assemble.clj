@@ -3,7 +3,7 @@
     (:require [fruits.string.api                :as string]
               [fruits.vector.api                :as vector]
               [source-code-formatter.ns.indents :as ns.indents]
-              [syntax-reader.api                :as syntax-reader]))
+              [source-code-formatter.ns.utils :as ns.utils]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -378,6 +378,6 @@
   ; @return (string)
   [file-content ns-declaration-map directive]
   (if-let [[started-at ended-at :as ns-directive-bounds] (-> ns-declaration-map directive :bounds)]
-          (let [commented-parts (syntax-reader/get-commented-parts file-content {} {:offset started-at :endpoint ended-at})]
+          (let [commented-parts (ns.utils/commented-parts file-content started-at ended-at)]
                (-> commented-parts (vector/->items (fn [%] (assemble-ns-directive-comment file-content ns-declaration-map directive %)))
                                    (string/join)))))

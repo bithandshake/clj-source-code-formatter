@@ -2,7 +2,9 @@
 (ns source-code-formatter.ns.utils
     (:require [fruits.map.api    :as map]
               [fruits.string.api :as string]
-              [fruits.vector.api :as vector]))
+              [fruits.vector.api :as vector]
+              [syntax-reader.api :as syntax-reader]
+              [syntax-interpreter.api :as syntax-interpreter]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -76,3 +78,32 @@
                          (update-in [:require :deps] vector/update-items-by :prefixed update :prefixed sort-libspecs)
                          (update-in [:use     :deps] sort-libspecs)
                          (update-in [:use     :deps] vector/update-items-by :prefixed update :prefixed sort-libspecs)))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn grey-parts
+  ; @ignore
+  ;
+  ; @param (string) file-content
+  ; @param (integer) from
+  ; @param (integer) to
+  ;
+  ; @return (map)
+  [file-content from to]
+  (syntax-reader/read-tags file-content [(:comment       syntax-interpreter/CLJ-PATTERNS)
+                                         (:meta-string   syntax-interpreter/CLJ-PATTERNS)
+                                         (:regex-pattern syntax-interpreter/CLJ-PATTERNS)
+                                         (:string        syntax-interpreter/CLJ-PATTERNS)]
+                                        {:offset from :endpoint to}))
+
+(defn commented-parts
+  ; @ignore
+  ;
+  ; @param (string) file-content
+  ; @param (integer) from
+  ; @param (integer) to
+  ;
+  ; @return (strings in vector)
+  [file-content from to]
+  (-> (grey-parts file-content from to) :comment))

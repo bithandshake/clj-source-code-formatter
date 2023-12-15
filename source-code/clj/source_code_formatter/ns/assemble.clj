@@ -3,7 +3,7 @@
     (:require [fruits.string.api                :as string]
               [fruits.vector.api                :as vector]
               [source-code-formatter.ns.indents :as ns.indents]
-              [source-code-formatter.ns.utils :as ns.utils]))
+              [source-code-formatter.ns.utils   :as ns.utils]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

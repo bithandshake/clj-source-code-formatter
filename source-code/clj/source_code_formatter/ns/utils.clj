@@ -1,10 +1,10 @@
 
 (ns source-code-formatter.ns.utils
-    (:require [fruits.map.api    :as map]
-              [fruits.string.api :as string]
-              [fruits.vector.api :as vector]
-              [syntax-reader.api :as syntax-reader]
-              [syntax-interpreter.api :as syntax-interpreter]))
+    (:require [fruits.map.api         :as map]
+              [fruits.string.api      :as string]
+              [fruits.vector.api      :as vector]
+              [syntax-interpreter.api :as syntax-interpreter]
+              [syntax-reader.api      :as syntax-reader]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

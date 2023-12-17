@@ -30,7 +30,7 @@
 
 (defn format-ns-deps!
   ; @description
-  ; Formats the dependencies within the namespace declaration in the source code file found at the given filepath.
+  ; Formats the dependency libspecs within the namespace declaration in the source code file at the given filepath.
   ;
   ; @param (string) filepath
   ;
@@ -38,7 +38,7 @@
   ; (format-ns-deps! "my-namespace.clj")
   [filepath]
   ; The 'ns-declaration-map' has to be regenerated after each directive rebuilding,
-  ; because the positons of other directives would have been changed.
+  ; because the positons of other directives might be changed.
   (if-let [file-content (io/read-file filepath {:warn? true})]
           (letfn [(f0 [file-content directive]
                       (let [ns-declaration-map (-> file-content source-code-map/ns-declaration-map ns.utils/prepare-ns-declaration-map)]

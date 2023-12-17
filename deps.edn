@@ -4,6 +4,10 @@
                                              :sha     "ac930b9104aab1b6c5b26147801cf359fe56d15e"}
          bithandshake/cljc-io               {:git/url "https://github.com/bithandshake/cljc-io"
                                              :sha     "27a962ccd0958cdbf8928cd26b23b38c298e7dae"}
-         monotech-tools/clj-source-code-map {:git/url "https://github.com/monotech-tools/clj-source-code-map"
+         mt-devtools/clj-source-code-map    {:git/url "https://github.com/mt-devtools/clj-source-code-map"
                                              :sha     "6a122185a9f57d0273fbb505a57cb5a73f2581c7"}
+         mt-devtools/clj-syntax-interpreter {:git/url "https://github.com/mt-devtools/clj-syntax-interpreter"
+                                             :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
+         mt-devtools/clj-syntax-reader      {:git/url "https://github.com/mt-devtools/clj-syntax-reader"
+                                             :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
          org.clojure/clojure                {:mvn/version "1.10.1"}}}

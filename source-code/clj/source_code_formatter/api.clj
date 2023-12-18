@@ -7,7 +7,7 @@
 
 ; @tutorial How to format dependency libspecs in a Clojure/ClojureScript namespace?
 ;
-; The ['source-code-formatter.api/format-ns-deps!'](#format-ns-deps!) function formats the dependency
+; The [source-code-formatter.api/format-ns-deps!](#format-ns-deps!) function formats the dependency
 ; libspecs within the namespace declaration in the source code file at the given filepath.
 ;
 ; @usage

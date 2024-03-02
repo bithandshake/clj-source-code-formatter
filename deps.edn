@@ -3,9 +3,9 @@
  :deps  {bithandshake/cljc-fruits           {:git/url "https://github.com/bithandshake/cljc-fruits"
                                              :sha     "dd0335ef3e68416663a2f377e88ca92a3d7718fb"}
          bithandshake/cljc-io               {:git/url "https://github.com/bithandshake/cljc-io"
-                                             :sha     "3a5514f9bbddb43ab1fc0ae0bd09645303843d06"}
+                                             :sha     "5b0e0e06978e75adff7ada7bf76d81f6eba4846c"}
          mt-devtools/clj-source-code-map    {:git/url "https://github.com/mt-devtools/clj-source-code-map"
-                                             :sha     "466df17ec361ad10e8e9f655624da3ff9b94f262"}
+                                             :sha     "f965acd6b6164fa56d8cf17e7609174d78b9c5da"}
          mt-devtools/clj-syntax-interpreter {:git/url "https://github.com/mt-devtools/clj-syntax-interpreter"
                                              :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
          mt-devtools/clj-syntax-reader      {:git/url "https://github.com/mt-devtools/clj-syntax-reader"

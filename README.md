@@ -16,10 +16,6 @@ The <strong>clj-source-code-formatter</strong> is a simple source code formatter
 
 Check out the latest commit on the [release branch](https://github.com/mt-devtools/clj-source-code-formatter/tree/release).
 
-### Documentation
-
-The <strong>clj-source-code-formatter</strong> functional documentation is [available here](https://mt-devtools.github.io/clj-source-code-formatter).
-
 ### Changelog
 
 You can track the changes of the <strong>clj-source-code-formatter</strong> library [here](CHANGES.md).
@@ -27,3 +23,7 @@ You can track the changes of the <strong>clj-source-code-formatter</strong> libr
 ### Style guide
 
 Strongly recommended to adhere to the guidelines outlined in the [Clojure Style Guide](https://github.com/bbatsov/clojure-style-guide)!
+
+# Documentation
+
+The <strong>clj-source-code-formatter</strong> functional documentation is [available here](https://mt-devtools.github.io/clj-source-code-formatter).

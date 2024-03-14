@@ -1,11 +1,11 @@
 
 {:paths ["source-code/clj"]
  :deps  {bithandshake/cljc-fruits           {:git/url "https://github.com/bithandshake/cljc-fruits"
-                                             :sha     "c053563cd20419db3b1f1a58356d5de8c07952cf"}
+                                             :sha     "6b5c9c060bdff84d0cd0bce908b64b268e5e6f0e"}
          bithandshake/cljc-io               {:git/url "https://github.com/bithandshake/cljc-io"
-                                             :sha     "ce7a00daae8bc02a8f61acd7d1491f7baa5abfad"}
+                                             :sha     "6076761e68196fdca1790e51ff157a2253e31cbf"}
          mt-devtools/clj-source-code-map    {:git/url "https://github.com/mt-devtools/clj-source-code-map"
-                                             :sha     "de11c52fe3223788e25852d7c5d2c01f0871d3e4"}
+                                             :sha     "233a7159e2400247e48ee79b00d0adf64d0b52b8"}
          mt-devtools/clj-syntax-interpreter {:git/url "https://github.com/mt-devtools/clj-syntax-interpreter"
                                              :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
          mt-devtools/clj-syntax-reader      {:git/url "https://github.com/mt-devtools/clj-syntax-reader"

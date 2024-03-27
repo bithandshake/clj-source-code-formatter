@@ -1,13 +1,13 @@
 
 {:paths ["source-code/clj"]
  :deps  {mt-devtools/clj-source-code-map    {:git/url "https://github.com/mt-devtools/clj-source-code-map"
-                                             :sha     "990d9eab0bc8cb01e3479748e55b04ef60470bcf"}
+                                             :sha     "75e347c9437ea946f3cb1e58ab759d307c1acd0a"}
          mt-devtools/clj-syntax-interpreter {:git/url "https://github.com/mt-devtools/clj-syntax-interpreter"
                                              :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
          mt-devtools/clj-syntax-reader      {:git/url "https://github.com/mt-devtools/clj-syntax-reader"
                                              :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
          bithandshake/cljc-fruits           {:git/url "https://github.com/bithandshake/cljc-fruits"
-                                             :sha     "6b5c9c060bdff84d0cd0bce908b64b268e5e6f0e"}
+                                             :sha     "42b62107e876c0779b9c30ec2d5489fb74303801"}
          mt-utilities/cljc-io               {:git/url "https://github.com/mt-utilities/cljc-io"
-                                             :sha     "2c33b339c258eb567e66c722980317726a51fa03"}
+                                             :sha     "1e6581a068723a60de262d05f348e8a697ab1305"}
          org.clojure/clojure                {:mvn/version "1.10.1"}}}

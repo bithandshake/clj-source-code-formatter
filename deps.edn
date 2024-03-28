@@ -1,13 +1,13 @@
 
 {:paths ["source-code/clj"]
- :deps  {mt-devtools/clj-source-code-map    {:git/url "https://github.com/mt-devtools/clj-source-code-map"
-                                             :sha     "4be46a021c62ce707f1ea8e8eafbd5e25b750612"}
-         mt-devtools/clj-syntax-interpreter {:git/url "https://github.com/mt-devtools/clj-syntax-interpreter"
-                                             :sha     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
-         mt-devtools/clj-syntax-reader      {:git/url "https://github.com/mt-devtools/clj-syntax-reader"
-                                             :sha     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
-         bithandshake/cljc-fruits           {:git/url "https://github.com/bithandshake/cljc-fruits"
-                                             :sha     "fcd4ebfed6cc44486464b5d619bef88d620c7f6a"}
-         mt-utilities/cljc-io               {:git/url "https://github.com/mt-utilities/cljc-io"
-                                             :sha     "69c0e421d606d131be3991efd8ce47d45034dd24"}
-         org.clojure/clojure                {:mvn/version "1.10.1"}}}
+ :deps  {mt-devtools/clj-source-code-map     {:git/url "https://github.com/mt-devtools/clj-source-code-map"
+                                              :sha     "00056cfb2a0a5edaed3ec058ba22894bf26c8fb2"}
+         mt-devtools/cljc-syntax-interpreter {:git/url "https://github.com/mt-devtools/cljc-syntax-interpreter"
+                                              :sha     "6d315e827a696d2e7b035a7cda24f9a4a64b5453"}
+         mt-devtools/cljc-syntax-reader      {:git/url "https://github.com/mt-devtools/cljc-syntax-reader"
+                                              :sha     "0760ad094d3c905d422017e50f975e8c6e42c5d0"}
+         bithandshake/cljc-fruits            {:git/url "https://github.com/bithandshake/cljc-fruits"
+                                              :sha     "fcd4ebfed6cc44486464b5d619bef88d620c7f6a"}
+         mt-utilities/cljc-io                {:git/url "https://github.com/mt-utilities/cljc-io"
+                                              :sha     "69c0e421d606d131be3991efd8ce47d45034dd24"}
+         org.clojure/clojure                 {:mvn/version "1.10.1"}}}
